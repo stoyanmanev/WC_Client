@@ -5,16 +5,20 @@
     </div>
     <div v-else>
       <p v-if="!hasResults">No matches were found for the next 4 days.</p>
-      <match-item v-for="match in matchesList" :key="match.home" :match="match"></match-item>
+      <match-item
+        v-for="match in matchesList"
+        :key="match.home"
+        :match="match"
+      ></match-item>
     </div>
   </section>
 </template>
 
 <script>
-import MatchItem from './MatchItem.vue';
+import MatchItem from "./MatchItem.vue";
 export default {
   components: {
-    MatchItem
+    MatchItem,
   },
   data() {
     return {
@@ -26,7 +30,7 @@ export default {
   computed: {
     matchesList() {
       const data = this.$store.getters["matches/matches"];
-      data.matches[0].score = '-';
+      console.log(data);
       return data.matches;
     },
   },
@@ -34,7 +38,10 @@ export default {
     async loadMatches() {
       this.isLoaded = true;
       try {
-        await this.$store.dispatch("matches/fetchMatches");
+        const responseData = await this.$store.dispatch("matches/fetchMatches");
+        if (responseData.success) {
+          await this.$store.dispatch("matches/saveMatchesToDB", responseData);
+        }
       } catch (error) {
         console.log(error);
       } finally {
@@ -49,12 +56,11 @@ export default {
 </script>
 
 <style scoped>
-.loader{
+.loader {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
 }
-
 </style>

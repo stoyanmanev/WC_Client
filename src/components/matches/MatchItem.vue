@@ -89,7 +89,7 @@ export default {
     data(){
         return{
             flag: null,
-            winner: 'away'
+            winner: null,
         } 
     },
     methods: {

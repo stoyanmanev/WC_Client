@@ -1,8 +1,8 @@
 import axios from "axios";
 import errorResponse from "./errorResponse";
 
-const fetcher = (url, data) => {
-    return axios.get(url, data || {}).then(response => {
+const fetcher = (url, data, method) => {
+    return axios[method](url, data || {}).then(response => {
         if(response.status !== 200) {
           // if response failed
           const error = {
