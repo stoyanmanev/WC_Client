@@ -79,7 +79,7 @@ section {
 form{
   border-radius: 9px;
   padding: 25px 48px 1px;
-  box-shadow:  20px 20px 60px #bebebe, -20px -20px 60px #ffffff;
+  box-shadow:  20px 20px 60px var(--color-scarlet), -20px -20px 60px var(--color-scarlet);
 }
 
 .inp {
@@ -107,7 +107,7 @@ form{
 }
 
 .label.error{
-  color: var(--color-alert);
+  color: var(--color-scarlet);
 }
 
 .focus-bg {
@@ -116,7 +116,7 @@ form{
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(var(--color-dark), 0.05);
+  background: rgba(var(--color-light), 0.05);
   z-index: -1;
   transform: scaleX(0);
   transform-origin: left;
@@ -132,24 +132,24 @@ input {
   height: 56px;
   font-size: 16px;
   font-weight: 400;
-  background: rgba(var(--color-dark), 0.02);
-  box-shadow: inset 0 -1px 0 rgba(var(--color-dark), 0.3);
-  color: var(--color-dark);
+  background: rgba(var(--color-light), 0.02);
+  box-shadow: inset 0 -1px 0 rgba(var(--color-light), 0.3);
+  color: var(--color-light);
   transition: all 0.15s ease;
 }
 
 input:hover {
-  background: rgba(var(--color-dark), 0.04);
-  box-shadow: inset 0 -1px 0 rgba(var(--color-dark), 0.5);
+  background: rgba(var(--color-light), 0.04);
+  box-shadow: inset 0 -1px 0 rgba(var(--color-light), 0.5);
 }
 
 input:not(:placeholder-shown) + .label {
-  color: rgba(var(--color-dark), 0.5);
+  color: rgba(var(--color-light), 0.5);
   transform: translate3d(0, -12px, 0) scale(0.75);
 }
 
 input:focus {
-  background: rgba(var(--color-dark), 0.05);
+  background: rgba(var(--color-light), 0.05);
   outline: none;
   box-shadow: inset 0 -2px 0 var(--color-scarlet);
 }
@@ -168,7 +168,7 @@ input:focus + .focus-bg {
   left: 50%;
   transform: translateX(-50%);
   padding: 8px 15px;
-  background: var(--color-alert);
+  background: var(--color-scarlet);
   color: var(--color-light);
   display: inline-block;
   border-radius: 9px;

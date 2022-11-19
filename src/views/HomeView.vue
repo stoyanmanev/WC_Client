@@ -1,6 +1,5 @@
 <template>
   <section class="home">
-    <p>Home</p>
     <matches-list></matches-list>
   </section>
 </template>
@@ -13,3 +12,6 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+</style>

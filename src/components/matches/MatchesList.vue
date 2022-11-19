@@ -1,6 +1,8 @@
 <template>
   <section class="matches">
-    <p v-if="isLoaded">Loading...</p>
+    <div v-if="isLoaded" class="loader">
+      <p>Loading...</p>
+    </div>
     <div v-else>
       <p v-if="!hasResults">No matches were found for the next 4 days.</p>
       <match-item v-for="match in matchesList" :key="match.home" :match="match"></match-item>
@@ -24,7 +26,7 @@ export default {
   computed: {
     matchesList() {
       const data = this.$store.getters["matches/matches"];
-      console.log(data);
+      data.matches[0].score = '-';
       return data.matches;
     },
   },
@@ -32,7 +34,7 @@ export default {
     async loadMatches() {
       this.isLoaded = true;
       try {
-        const responseData = await this.$store.dispatch("matches/fetchMatches");
+        await this.$store.dispatch("matches/fetchMatches");
       } catch (error) {
         console.log(error);
       } finally {
@@ -46,4 +48,13 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.loader{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+</style>

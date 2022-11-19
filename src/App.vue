@@ -15,10 +15,11 @@ export default {};
 
 :root {
   --color-scarlet: #9a1132;
+  --color-dark-scarlet: #1c020c;
   --color-yellow: #fec310;
   --color-picton-blue: #49bce3;
   --color-boat-blue: #1077c3;
-  --color-dark: #212121;
+  --color-dark: #0c0006;
   --color-grey: #b3b3b3;
   --color-light: #ffffff;
   --color-alert: #ff0000;
@@ -36,13 +37,19 @@ export default {};
   display: none;
   width: 0;
 }
+body{
+  background: rgba(28,2,12,1);
+  background: radial-gradient(circle, var(--color-dark-scarlet) 50%, var(--color-dark) 100%);
+}
 #app {
   font-family: var(--main-font);
   font-size: var(--fs);
   line-height: calc(1em + 10px);
-  color: var(--color-dark);
-  background: var(--color-light);
+  color: var(--color-light);
+  max-width: 1048px;
+  margin: 0 auto;
   overflow-x: hidden;
+  padding: 50px 0;
 }
 
 .btn{
@@ -60,7 +67,7 @@ export default {};
 .btn:hover,
 .btn:active,
 .btn:focus{
-  background-color: var(--color-light);
+  background-color: var(--color-dark-scarlet);
   color: var(--color-scarlet);
 }
 
