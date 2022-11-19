@@ -1,12 +1,15 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-  </div>
+  <section class="home">
+    <p>Home</p>
+    <matches-list></matches-list>
+  </section>
 </template>
 
 <script>
-// @ is an alias to /src
-
+import MatchesList from '@/components/matches/MatchesList.vue';
 export default {
+  components: {
+    MatchesList
+  }
 }
 </script>
