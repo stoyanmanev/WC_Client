@@ -45,7 +45,7 @@
             :alt="match.home"
           />
           <img
-            v-else-if="match.home === 'Хърватия'"
+            v-else-if="match.home === 'Хърватска'"
             src="@/images/flags/croatia-flag.svg"
             :alt="match.home"
           />
@@ -219,7 +219,7 @@
             :alt="match.away"
           />
           <img
-            v-else-if="match.away === 'Хърватия'"
+            v-else-if="match.away === 'Хърватска'"
             src="@/images/flags/croatia-flag.svg"
             :alt="match.away"
           />
@@ -386,7 +386,6 @@ export default {
       }
     },
     async setBet(type) {
-      // if user exist
       if (!this.bet) return false;
       const user = this.$store.getters["auth/user"];
       if (user === null) {
