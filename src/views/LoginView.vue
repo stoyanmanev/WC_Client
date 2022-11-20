@@ -116,7 +116,7 @@ form{
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(var(--color-light), 0.05);
+  background: rgba(var(--color-scarlet), 0.05);
   z-index: -1;
   transform: scaleX(0);
   transform-origin: left;
@@ -132,15 +132,15 @@ input {
   height: 56px;
   font-size: 16px;
   font-weight: 400;
-  background: rgba(var(--color-light), 0.02);
-  box-shadow: inset 0 -1px 0 rgba(var(--color-light), 0.3);
+  background: rgba(var(--color-scarlet), 0.02);
+  box-shadow: inset 0 -1px 0 rgba(var(--color-scarlet), 0.3);
   color: var(--color-light);
   transition: all 0.15s ease;
 }
 
 input:hover {
-  background: rgba(var(--color-light), 0.04);
-  box-shadow: inset 0 -1px 0 rgba(var(--color-light), 0.5);
+  background: rgba(var(--color-scarlet), 0.04);
+  box-shadow: inset 0 -1px 0 rgba(var(--color-scarlet), 0.5);
 }
 
 input:not(:placeholder-shown) + .label {

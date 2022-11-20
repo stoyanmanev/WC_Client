@@ -22,6 +22,7 @@
             v-for="match in matchesList"
             :key="match.home"
             :match="match"
+            :bet="true"
           ></match-item>
         </div>
       </div>
@@ -91,7 +92,7 @@ export default {
       } finally {
         this.isLoaded = false;
       }
-    },
+    }
   },
   created() {
     this.loadMatches();
