@@ -1,5 +1,6 @@
 <template>
   <router-view v-slot="slotProps">
+    <the-navigation></the-navigation>
     <transition name="router" mode="out-in">
       <component :is="slotProps.Component"></component>
     </transition>
@@ -7,7 +8,10 @@
 </template>
 
 <script>
-export default {};
+import TheNavigation from './layout/TheNavigation.vue';
+export default {
+  components: { TheNavigation }
+  };
 </script>
 
 <style>

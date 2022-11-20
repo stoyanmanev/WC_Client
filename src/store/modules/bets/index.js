@@ -7,6 +7,7 @@ export default {
     state(){
         return {
             bets: null,
+            betsList: null,
         }
     },
     mutations,

@@ -40,5 +40,17 @@ export default {
             }).catch(error => errorResponse(error));
             
         }).catch(error => errorResponse(error));
+    },
+    async loadBets(context){
+        return axios.get(`${DB_URL}/bets.json`).then( async(response) => {
+            if(response.error){
+                const error = new Error(response.message || 'Failed to fetch!');
+                throw error;
+            }
+            
+            context.commit('loadBets', response.data);
+            return true;
+            
+        }).catch(error => errorResponse(error));
     }
 };

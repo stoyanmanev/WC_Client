@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import LoginView from '../views/LoginView.vue'
+import RankingsView from '../views/RankingsView.vue'
 import store from '@/store/index';
 
 
@@ -12,6 +13,10 @@ const routes = [
   {
     path: '/login',
     component: LoginView
+  },
+  {
+    path: '/rankings',
+    component: RankingsView
   }
 ]
 
@@ -23,14 +28,14 @@ const router = createRouter({
 
 /////////////////////
 /// Guard
-// router.beforeEach(function (to, _, next) {
-//   if(store.getters['auth/user'] === null && to.path !== '/login'){
-//     next('/login');
-//   }else if(store.getters['auth/user'] && to.path === '/login'){
-//     next('/');
-//   }else{
-//     next();
-//   }
-// });
+router.beforeEach(function (to, _, next) {
+  if(store.getters['auth/user'] === null && to.path !== '/login'){
+    next('/login');
+  }else if(store.getters['auth/user'] && to.path === '/login'){
+    next('/');
+  }else{
+    next();
+  }
+});
 
 export default router

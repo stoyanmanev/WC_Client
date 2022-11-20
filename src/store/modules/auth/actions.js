@@ -19,5 +19,27 @@ export default {
             
             return false;
         }).catch(error => errorResponse(error));
+    },
+    async loadUsers(context){
+        return axios.get(`${DB_URL}/users.json`).then(response => {
+            if(response.error){
+                const error = new Error(response.message || 'Failed to fetch!');
+                throw error;
+            }
+            
+            context.commit('loadUsers', response.data);
+            return true;
+            
+        }).catch(error => errorResponse(error));
+    },
+    async updateUser(_, payload){
+        return axios.put(`${DB_URL}/users/${payload.username}/points.json`, payload.points).then(response => {
+            if(response.error){
+                const error = new Error(response.message || 'Failed to fetch!');
+                throw error;
+            }
+            
+            return true;
+        }).catch(error => errorResponse(error));
     }
 };

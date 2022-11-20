@@ -75,15 +75,6 @@ export default {
       this.isLoaded = true;
       try {
         const responseData = await this.$store.dispatch("matches/fetchMatches");
-        // const test = {
-        //   away: "Испания",
-        //   date: "22-10-2022",
-        //   finished: false,
-        //   home: "Португалия",
-        //   isPlaying: true,
-        //   score: "0 - 3",
-        // };
-        // responseData.matches.push(test);
         if (responseData.success) {
           await this.$store.dispatch("matches/saveMatchesToDB", responseData);
         }
