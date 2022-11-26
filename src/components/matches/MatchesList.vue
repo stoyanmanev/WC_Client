@@ -4,35 +4,60 @@
       <p>Loading...</p>
     </div>
     <div v-else>
-      <div v-if="hasLiveMatches" class="live-results-wrapper">
-        <h2>Резултати на Живо</h2>
-        <match-item
-          v-for="match in liveMatchesList"
-          :key="match.home"
-          :match="match"
-        ></match-item>
+      <div class="matches-navi">
+        <ul>
+          <li>
+            <span @click="() => switchListMatches('upcoming-matches')">Предстоящи</span>
+          </li>
+          <li>
+            <span @click="() => switchListMatches('live-matches')">На живо</span>
+          </li>
+          <li>
+            <span @click="() => switchListMatches('compleated-matches')">Резултати</span>
+          </li>
+        </ul>
       </div>
-      <div class="upcoming-matches-wrapper">
-        <div v-if="!hasResults" class="no-results-wrapper">
-          <h2>Няма предстоящи мачове за следващите 4 дни.</h2>
+      <div class="matches-wrapper">
+        <div v-if="activeTab === 'live-matches'" class="live-results-wrapper">
+          <div v-if="!hasLiveMatches" class="no-results-wrapper">
+            <h2>В момента няма мачове на живо</h2>
+          </div>
+          <div v-else>
+            <h2>Резултати на Живо</h2>
+            <match-item
+              v-for="match in liveMatchesList"
+              :key="match.home"
+              :match="match"
+            ></match-item>
+          </div>
         </div>
-        <div v-else class="wrapper">
-          <h2>Предстоящи мачове</h2>
-          <match-item
-            v-for="match in matchesList"
-            :key="match.home"
-            :match="match"
-            :bet="true"
-          ></match-item>
+        <div v-if="activeTab === 'upcoming-matches'" class="upcoming-matches-wrapper">
+          <div v-if="!hasResults" class="no-results-wrapper">
+            <h2>Няма предстоящи мачове за следващите 4 дни.</h2>
+          </div>
+          <div v-else class="wrapper">
+            <h2>Предстоящи мачове</h2>
+            <match-item
+              v-for="match in matchesList"
+              :key="match.home"
+              :match="match"
+              :bet="true"
+            ></match-item>
+          </div>
         </div>
-      </div>
-      <div v-if="hasCompletedMatches" class="finished-results-wrapper">
-        <h2>Резултати</h2>
-        <match-item
-          v-for="match in finishedMatchesList"
-          :key="match.home"
-          :match="match"
-        ></match-item>
+        <div v-if="activeTab === 'compleated-matches'" class="finished-results-wrapper">
+          <div v-if="!hasCompletedMatches" class="no-results-wrapper">
+            <h2>Все още няма резултати за изминали мачове</h2>
+          </div>
+          <div v-else>
+            <h2>Резултати</h2>
+            <match-item
+              v-for="match in finishedMatchesList"
+              :key="match.home"
+              :match="match"
+            ></match-item>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -51,12 +76,19 @@ export default {
       hasLiveMatches: true,
       isLoaded: false,
       hasResults: true,
+      activeTab: 'upcoming-matches',
     };
   },
   computed: {
     matchesList() {
       const data = this.$store.getters["matches/matches"];
-      const upcomingMatches = data.matches.filter(match => !match.finished && !match.isPlaying);
+      const bets = this.$store.getters["bets/userBets"];
+
+      const upcomingMatches = data.matches.filter(match => {
+        match.bet = bets.hasOwnProperty(match.key) ? bets[match.key] : null;
+        return !match.finished && !match.isPlaying
+      });
+
       return upcomingMatches;
     },
     finishedMatchesList(){
@@ -77,17 +109,22 @@ export default {
         const responseData = await this.$store.dispatch("matches/fetchMatches");
         if (responseData.success) {
           await this.$store.dispatch("matches/saveMatchesToDB", responseData);
+          await this.$store.dispatch("bets/loadUserBets");
+          this.$store.dispatch("navigation/setNavigationState", true);
         }
       } catch (error) {
         console.log(error);
       } finally {
         this.isLoaded = false;
       }
+    },
+    switchListMatches(type){
+      this.activeTab = type;
     }
   },
   created() {
     this.loadMatches();
-  },
+  }
 };
 </script>
 
@@ -103,8 +140,12 @@ export default {
   text-align: center;
 }
 
+.matches-wrapper{
+  margin-top: 50px;
+}
+
 .finished-results-wrapper{
-  margin-top: 98px;
+  margin-bottom: 98px;
 }
 .live-results-wrapper{
   margin-bottom: 98px;
@@ -115,4 +156,31 @@ export default {
   text-align: center;
   margin-bottom: 48px;
 }
+.matches-navi{
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  z-index: 999;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: none;
+}
+.matches-navi ul{
+  display: flex;
+  list-style: none;
+  padding: 15px;
+  pointer-events: all;
+  border-radius: 9px;
+  background: var(--color-dark);
+}
+.matches-navi li{
+  margin-right: 14px;
+  cursor: pointer;
+  font-size: 12px;
+  line-height: 1em;
+}
+.matches-navi li:last-child{
+  margin-right: 0;
+}
+
 </style>

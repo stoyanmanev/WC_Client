@@ -29,6 +29,7 @@ export default {
       const m = data.map((result, i) => {
         return{
             user: result.key,
+            nickname: result.nickname,
             place: i + 1,
             points: result.points
         }

@@ -1,5 +1,5 @@
 <template>
-  <div :class="`match ${this.bet ? 'bet' : ''}`">
+  <div :class="`match ${this.bet ? 'bet' : ''} ${matchBet !== null ? 'mb' : ''}`">
     <p class="date">{{ match.date }}</p>
     <div class="wrapper">
       <div :class="`home-team team ${winner === 'home' ? 'winner' : ''}`">
@@ -341,6 +341,7 @@
         </span>
         <span v-if="this.bet" class="label">Резултата от срещата ще бъде победа за {{match.away}}</span>
       </div>
+      <div v-if="matchBet" :class="`bet-wrapper ${match.finished ? isBetTrue : ''}`"><span>{{showUserBet}}</span></div>
     </div>
     <div v-if="settingBet && !betMessage" class="message loader">
       <multi-spinner></multi-spinner>
@@ -364,7 +365,26 @@ export default {
       winner: null,
       settingBet: false,
       betMessage: null,
+      matchBet: this.match.bet
     };
+  },
+  computed: {
+    showUserBet(){
+      switch(this.matchBet){
+        case '1': return `Победа за ${this.match.home}`;
+        case '2': return `Победа за ${this.match.away}`;
+        case 'X': return `Равен`;
+      }
+    },
+    isBetTrue(){
+      if(this.winner === null) return '';
+      
+      if(this.winner === 'home' && this.matchBet === '1') return 'correct';
+      if(this.winner === 'away' && this.matchBet === '2') return 'correct';
+      if(this.winner === 'draw' && this.matchBet === 'X') return 'correct';
+      
+      return 'wrong';
+    }
   },
   methods: {
     setWinner() {
@@ -406,6 +426,7 @@ export default {
 
         if (isSaved) {
           this.betMessage = "Прогнозата е запазена";
+          this.matchBet = type;
         } else {
           this.betMessage =
             "Възникна неочаквана грешка. Моля, опитайте отново по-късно.";
@@ -423,7 +444,7 @@ export default {
   },
   created() {
     this.setWinner();
-  },
+  }
 };
 </script>
 
@@ -431,6 +452,9 @@ export default {
 .match {
     position: relative;
   margin-bottom: 48px;
+}
+.match.mb{
+  margin-bottom: 85px;
 }
 
 .match.bet .flag,
@@ -449,6 +473,7 @@ export default {
     transform: translateX(-50%);
     background: var(--color-scarlet);
     color: var(--color-light);
+    text-align: center;
     border-radius: 8px;
     font-size: 14px;
     line-height: calc(1em + 6px);
@@ -545,6 +570,30 @@ export default {
 .date {
   display: block;
   text-align: center;
+}
+
+.bet-wrapper{
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  min-width: 292px;
+  transform: translateX(-50%);
+  background: rgba(28, 2, 12, 1);
+  background: radial-gradient( circle, rgba(255, 255, 255, 0.02) 0%, rgba(255, 255, 255, 0) 100% );
+  color: var(--color-light);
+  border-radius: 8px;
+  text-align: center;
+  font-size: 14px;
+  line-height: calc(1em + 6px);
+  transition: all .45s ease-out;
+  padding: 8px 14px;
+}
+
+.bet-wrapper.correct{
+  background: var(--color-boat-blue);
+}
+.bet-wrapper.wrong{
+  opacity: 0.7;
 }
 
 .message {
