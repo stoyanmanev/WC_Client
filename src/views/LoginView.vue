@@ -36,7 +36,7 @@ export default {
       this.isError = false;
       this.errorMsg = null;
       
-      if(this.username === ''){
+      if(this.username.trim() === ''){
         this.isErrorUsername = true;
         this.isError = true;
       }
@@ -47,7 +47,7 @@ export default {
       if(this.isError) return;
       
       try {
-        const isUserExist = await this.$store.dispatch('auth/userExist', {username: this.username, password: this.password});
+        const isUserExist = await this.$store.dispatch('auth/userExist', {username: this.username.trim(), password: this.password});
         if(!isUserExist){
           return this.errorMsg = 'Wrong username or password';
         }else{
