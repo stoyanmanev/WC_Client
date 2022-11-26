@@ -5,7 +5,7 @@
         {{rank.place}}
       </span>
       <span class="user">
-        {{rank.user}}
+        {{this.rank.nickname}}
       </span>
     </div>
     <div>
@@ -38,7 +38,6 @@ export default {
     font-size: 24px;
     line-height: calc(1em + 10px);
     padding: 8px 24px;
-    text-transform: uppercase;
     z-index: 1;
   }
 
