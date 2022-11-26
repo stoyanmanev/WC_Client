@@ -4,35 +4,50 @@
       <p>Loading...</p>
     </div>
     <div v-else>
-      <div v-if="hasLiveMatches" class="live-results-wrapper">
-        <h2>Резултати на Живо</h2>
-        <match-item
-          v-for="match in liveMatchesList"
-          :key="match.home"
-          :match="match"
-        ></match-item>
+      <div class="matches-navi">
+        <ul>
+          <li v-if="hasLiveMatches">
+            <span @click="() => switchListMatches('upcoming-matches')">Предстоящи</span>
+          </li>
+          <li>
+            <span @click="() => switchListMatches('live-matches')">На живо</span>
+          </li>
+          <li v-if="hasCompletedMatches">
+            <span @click="() => switchListMatches('compleated-matches')">Резултати</span>
+          </li>
+        </ul>
       </div>
-      <div class="upcoming-matches-wrapper">
-        <div v-if="!hasResults" class="no-results-wrapper">
-          <h2>Няма предстоящи мачове за следващите 4 дни.</h2>
-        </div>
-        <div v-else class="wrapper">
-          <h2>Предстоящи мачове</h2>
+      <div class="matches-wrapper">
+        <div v-if="hasLiveMatches && activeTab === 'live-matches'" class="live-results-wrapper">
+          <h2>Резултати на Живо</h2>
           <match-item
-            v-for="match in matchesList"
+            v-for="match in liveMatchesList"
             :key="match.home"
             :match="match"
-            :bet="true"
           ></match-item>
         </div>
-      </div>
-      <div v-if="hasCompletedMatches" class="finished-results-wrapper">
-        <h2>Резултати</h2>
-        <match-item
-          v-for="match in finishedMatchesList"
-          :key="match.home"
-          :match="match"
-        ></match-item>
+        <div v-if="activeTab === 'upcoming-matches'" class="upcoming-matches-wrapper">
+          <div v-if="!hasResults" class="no-results-wrapper">
+            <h2>Няма предстоящи мачове за следващите 4 дни.</h2>
+          </div>
+          <div v-else class="wrapper">
+            <h2>Предстоящи мачове</h2>
+            <match-item
+              v-for="match in matchesList"
+              :key="match.home"
+              :match="match"
+              :bet="true"
+            ></match-item>
+          </div>
+        </div>
+        <div v-if="hasCompletedMatches && activeTab === 'compleated-matches'" class="finished-results-wrapper">
+          <h2>Резултати</h2>
+          <match-item
+            v-for="match in finishedMatchesList"
+            :key="match.home"
+            :match="match"
+          ></match-item>
+        </div>
       </div>
     </div>
   </section>
@@ -51,6 +66,7 @@ export default {
       hasLiveMatches: true,
       isLoaded: false,
       hasResults: true,
+      activeTab: 'upcoming-matches',
     };
   },
   computed: {
@@ -84,6 +100,9 @@ export default {
       } finally {
         this.isLoaded = false;
       }
+    },
+    switchListMatches(type){
+      this.activeTab = type;
     }
   },
   created() {
@@ -104,8 +123,12 @@ export default {
   text-align: center;
 }
 
+.matches-wrapper{
+  margin-top: 50px;
+}
+
 .finished-results-wrapper{
-  margin-top: 98px;
+  margin-bottom: 98px;
 }
 .live-results-wrapper{
   margin-bottom: 98px;
@@ -116,4 +139,29 @@ export default {
   text-align: center;
   margin-bottom: 48px;
 }
+.matches-navi{
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  z-index: 999;
+  pointer-events: none;
+}
+.matches-navi ul{
+  display: flex;
+  list-style: none;
+  padding: 15px;
+  pointer-events: all;
+  border-radius: 9px;
+  background: var(--color-dark);
+}
+.matches-navi li{
+  margin-right: 14px;
+  cursor: pointer;
+  font-size: 12px;
+  line-height: 1em;
+}
+.matches-navi li:last-child{
+  margin-right: 0;
+}
+
 </style>

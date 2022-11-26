@@ -45,6 +45,7 @@ nav {
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
+  pointer-events: none;
 }
 nav ul {
   display: flex;
@@ -52,6 +53,7 @@ nav ul {
   background: var(--color-dark);
   padding: 15px 15px 7px;
   border-radius: 9px;
+  pointer-events: all;
 
 }
 li {
