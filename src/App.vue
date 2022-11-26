@@ -82,6 +82,12 @@ body {
   margin-bottom: var(--lh);
 }
 
+.home.router-leave-to .matches-navi,
+.home.router-leave-from .matches-navi{
+  opacity: 0;
+  visibility: hidden;
+}
+
 .btn:hover,
 .btn:active,
 .btn:focus {

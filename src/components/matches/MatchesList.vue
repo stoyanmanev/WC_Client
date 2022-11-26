@@ -161,6 +161,8 @@ export default {
   top: 15px;
   left: 15px;
   z-index: 999;
+  opacity: 1;
+  visibility: visible;
   pointer-events: none;
 }
 .matches-navi ul{
