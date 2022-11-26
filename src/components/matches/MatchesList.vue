@@ -6,25 +6,30 @@
     <div v-else>
       <div class="matches-navi">
         <ul>
-          <li v-if="hasLiveMatches">
+          <li>
             <span @click="() => switchListMatches('upcoming-matches')">Предстоящи</span>
           </li>
           <li>
             <span @click="() => switchListMatches('live-matches')">На живо</span>
           </li>
-          <li v-if="hasCompletedMatches">
+          <li>
             <span @click="() => switchListMatches('compleated-matches')">Резултати</span>
           </li>
         </ul>
       </div>
       <div class="matches-wrapper">
-        <div v-if="hasLiveMatches && activeTab === 'live-matches'" class="live-results-wrapper">
-          <h2>Резултати на Живо</h2>
-          <match-item
-            v-for="match in liveMatchesList"
-            :key="match.home"
-            :match="match"
-          ></match-item>
+        <div v-if="activeTab === 'live-matches'" class="live-results-wrapper">
+          <div v-if="!hasLiveMatches" class="no-results-wrapper">
+            <h2>В момента няма мачове на живо</h2>
+          </div>
+          <div v-else>
+            <h2>Резултати на Живо</h2>
+            <match-item
+              v-for="match in liveMatchesList"
+              :key="match.home"
+              :match="match"
+            ></match-item>
+          </div>
         </div>
         <div v-if="activeTab === 'upcoming-matches'" class="upcoming-matches-wrapper">
           <div v-if="!hasResults" class="no-results-wrapper">
@@ -40,13 +45,18 @@
             ></match-item>
           </div>
         </div>
-        <div v-if="hasCompletedMatches && activeTab === 'compleated-matches'" class="finished-results-wrapper">
-          <h2>Резултати</h2>
-          <match-item
-            v-for="match in finishedMatchesList"
-            :key="match.home"
-            :match="match"
-          ></match-item>
+        <div v-if="activeTab === 'compleated-matches'" class="finished-results-wrapper">
+          <div v-if="!hasCompletedMatches" class="no-results-wrapper">
+            <h2>Все още няма резултати за изминали мачове</h2>
+          </div>
+          <div v-else>
+            <h2>Резултати</h2>
+            <match-item
+              v-for="match in finishedMatchesList"
+              :key="match.home"
+              :match="match"
+            ></match-item>
+          </div>
         </div>
       </div>
     </div>
@@ -72,7 +82,13 @@ export default {
   computed: {
     matchesList() {
       const data = this.$store.getters["matches/matches"];
-      const upcomingMatches = data.matches.filter(match => !match.finished && !match.isPlaying);
+      const bets = this.$store.getters["bets/userBets"];
+
+      const upcomingMatches = data.matches.filter(match => {
+        match.bet = bets.hasOwnProperty(match.key) ? bets[match.key] : null;
+        return !match.finished && !match.isPlaying
+      });
+
       return upcomingMatches;
     },
     finishedMatchesList(){
@@ -93,6 +109,7 @@ export default {
         const responseData = await this.$store.dispatch("matches/fetchMatches");
         if (responseData.success) {
           await this.$store.dispatch("matches/saveMatchesToDB", responseData);
+          await this.$store.dispatch("bets/loadUserBets");
           this.$store.dispatch("navigation/setNavigationState", true);
         }
       } catch (error) {
@@ -107,7 +124,7 @@ export default {
   },
   created() {
     this.loadMatches();
-  },
+  }
 };
 </script>
 
