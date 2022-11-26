@@ -1,5 +1,5 @@
 <template>
-  <div class="rank">
+  <div :class="`rank ${currentUser}`">
     <div>
       <span class="place">
         {{rank.place}}
@@ -18,7 +18,13 @@
 
 <script>
 export default {
-  props: ['rank']
+  props: ['rank'],
+  computed: {
+    currentUser(){
+      const storeUser = this.$store.getters['auth/user'].username;
+      return this.rank.user === storeUser ? 'myrank' : '';
+    }
+  }
 }
 </script>
 
@@ -50,6 +56,13 @@ export default {
     rgba(255, 255, 255, 0.02) 100%
   );
   z-index: -1;
+}
+
+.rank.myrank:before{
+  background: radial-gradient(
+    rgba(154, 17, 50, 0.8) 50%,
+    rgba(255, 255, 255, 0.01) 100%
+  );
 }
   
   .place{
