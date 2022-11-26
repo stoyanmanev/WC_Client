@@ -77,6 +77,7 @@ export default {
         const responseData = await this.$store.dispatch("matches/fetchMatches");
         if (responseData.success) {
           await this.$store.dispatch("matches/saveMatchesToDB", responseData);
+          this.$store.dispatch("navigation/setNavigationState", true);
         }
       } catch (error) {
         console.log(error);

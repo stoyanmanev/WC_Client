@@ -1,8 +1,9 @@
 import { createStore } from "vuex";
 import AuthModule from './modules/auth/index';
 import BetsModule from './modules/bets/index';
-import RankingsModule from './modules/rankings/index';
+import NavigationModule from './modules/navigation/index';
 import MatchesModule from './modules/matches/index';
+import RankingsModule from './modules/rankings/index';
 
 const store = createStore({
   modules: {
@@ -10,12 +11,9 @@ const store = createStore({
       bets: BetsModule,
       rankings: RankingsModule,
       matches: MatchesModule,
+      navigation: NavigationModule
   },
-  state(){
-      return {
-          userName: 'Stoyan'
-      }
-  }
+
 })
 
 export default store;

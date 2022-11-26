@@ -1,6 +1,6 @@
 <template>
   <router-view v-slot="slotProps">
-    <the-navigation></the-navigation>
+    <the-navigation v-if="isShowNavigation"></the-navigation>
     <transition name="router" mode="out-in">
       <component :is="slotProps.Component"></component>
     </transition>
@@ -8,10 +8,20 @@
 </template>
 
 <script>
-import TheNavigation from './layout/TheNavigation.vue';
+import TheNavigation from "./layout/TheNavigation.vue";
 export default {
-  components: { TheNavigation }
-  };
+  components: { TheNavigation },
+  data() {
+    return {
+      showNavigation: this.$store.getters['navigation/navigationState'],
+    };
+  },
+  computed: {
+    isShowNavigation(){
+      return this.$store.getters['navigation/navigationState'];
+    }
+  }
+};
 </script>
 
 <style>
@@ -41,9 +51,13 @@ export default {
   display: none;
   width: 0;
 }
-body{
-  background: rgba(28,2,12,1);
-  background: radial-gradient(circle, var(--color-dark-scarlet) 50%, var(--color-dark) 100%);
+body {
+  background: rgba(28, 2, 12, 1);
+  background: radial-gradient(
+    circle,
+    var(--color-dark-scarlet) 50%,
+    var(--color-dark) 100%
+  );
 }
 #app {
   font-family: var(--main-font);
@@ -56,7 +70,7 @@ body{
   padding: 50px 0;
 }
 
-.btn{
+.btn {
   background-color: var(--color-scarlet);
   color: var(--color-light);
   border-radius: 9px;
@@ -64,13 +78,13 @@ body{
   min-width: 201px;
   border: 1px solid var(--color-scarlet);
   cursor: pointer;
-  transition: all .45s ease-out;
+  transition: all 0.45s ease-out;
   margin-bottom: var(--lh);
 }
 
 .btn:hover,
 .btn:active,
-.btn:focus{
+.btn:focus {
   background-color: var(--color-dark-scarlet);
   color: var(--color-scarlet);
 }
