@@ -6,9 +6,7 @@ export default {
     namespaced: true,
     state(){
         return {
-            bets: null,
-            userBets: null,
-            betsList: null,
+            showNavigation: false
         }
     },
     mutations,

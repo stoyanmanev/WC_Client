@@ -1,6 +1,7 @@
 import axios from "axios";
 import { DB_URL } from "@/globals";
 import errorResponse from "@/helpers/errorResponse";
+import store from '@/store/index';
 
 export default {
     async setBet(context, payload){
@@ -40,6 +41,18 @@ export default {
             }).catch(error => errorResponse(error));
             
         }).catch(error => errorResponse(error));
+    },
+    async loadUserBets(context){
+        const username = store.getters['auth/user'].username;
+        return axios.get(`${DB_URL}/bets/${username}.json`).then( async(response) => {
+            if(response.error){
+                const error = new Error(response.message || 'Failed to fetch!');
+                throw error;
+            }
+            context.commit('setUserBets', response.data);
+            return true;
+            
+        }).catch(error => errorResponse(error)); 
     },
     async loadBets(context){
         return axios.get(`${DB_URL}/bets.json`).then( async(response) => {
