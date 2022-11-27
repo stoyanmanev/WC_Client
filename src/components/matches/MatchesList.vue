@@ -1,7 +1,7 @@
 <template>
   <section class="matches">
     <div v-if="isLoaded" class="loader">
-      <p>Loading...</p>
+      <ellipsis-spinner></ellipsis-spinner>
     </div>
     <div v-else>
       <div class="matches-navi">
@@ -24,11 +24,13 @@
           </div>
           <div v-else>
             <h2>Резултати на Живо</h2>
-            <match-item
-              v-for="match in liveMatchesList"
-              :key="match.home"
-              :match="match"
-            ></match-item>
+            <div class="matches-container">
+              <match-item
+                v-for="match in liveMatchesList"
+                :key="match.home"
+                :match="match"
+              ></match-item>
+            </div>
           </div>
         </div>
         <div v-if="activeTab === 'upcoming-matches'" class="upcoming-matches-wrapper">
@@ -37,12 +39,14 @@
           </div>
           <div v-else class="wrapper">
             <h2>Предстоящи мачове</h2>
-            <match-item
-              v-for="match in matchesList"
-              :key="match.home"
-              :match="match"
-              :bet="true"
-            ></match-item>
+            <div class="matches-container">
+              <match-item
+                v-for="match in matchesList"
+                :key="match.home"
+                :match="match"
+                :bet="true"
+              ></match-item>
+            </div>
           </div>
         </div>
         <div v-if="activeTab === 'compleated-matches'" class="finished-results-wrapper">
@@ -51,11 +55,13 @@
           </div>
           <div v-else>
             <h2>Резултати</h2>
-            <match-item
-              v-for="match in finishedMatchesList"
-              :key="match.home"
-              :match="match"
-            ></match-item>
+            <div class="matches-container container-reverse">
+              <match-item
+                v-for="match in finishedMatchesList"
+                :key="match.home"
+                :match="match"
+              ></match-item>
+              </div>
           </div>
         </div>
       </div>
@@ -65,9 +71,11 @@
 
 <script>
 import MatchItem from "./MatchItem.vue";
+import EllipsisSpinner from "../loaders/EllipsisSpinner.vue";
 export default {
   components: {
     MatchItem,
+    EllipsisSpinner
   },
   data() {
     return {
@@ -155,6 +163,14 @@ export default {
 .live-results-wrapper h2{
   text-align: center;
   margin-bottom: 48px;
+}
+
+.matches-container{
+  display: flex;
+  flex-direction: column;
+}
+.matches-container.container-reverse{
+  flex-direction: column-reverse;
 }
 .matches-navi{
   position: fixed;
