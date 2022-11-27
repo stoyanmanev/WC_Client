@@ -344,7 +344,7 @@
       <div v-if="matchBet" :class="`bet-wrapper ${match.finished ? isBetTrue : ''}`"><span>{{showUserBet}}</span></div>
     </div>
     <div v-if="settingBet && !betMessage" class="message loader">
-      <multi-spinner></multi-spinner>
+      <ellipsis-spinner></ellipsis-spinner>
     </div>
     <div v-if="settingBet && betMessage" class="message">
       <p>{{ betMessage }}</p>
@@ -353,11 +353,11 @@
 </template>
 
 <script>
-import MultiSpinner from "@/components/loaders/MultiSpinner.vue";
+import EllipsisSpinner from "@/components/loaders/EllipsisSpinner.vue";
 export default {
   props: ["match", "bet"],
   components: {
-    MultiSpinner,
+    EllipsisSpinner,
   },
   data() {
     return {
@@ -610,13 +610,13 @@ export default {
 }
 
 .loader {
-  position: fixed;
+  position: absolute;
   padding: 0;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
-  width: 100%;
-  height: 100%;
+  transform: translate(-50%, calc(-50% + 16px));
+  width: 80px;
+  height: 108px;
   display: flex;
   flex-direction: column;
   align-items: center;
