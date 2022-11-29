@@ -452,12 +452,17 @@ export default {
       if(!this.isLive) return;
 
       const minute = this.match.minutes;
-      if(Number.isNaN(+minute)) return this.minute = null;
       const n = minute.split("'")[0];
+      if(Number.isNaN(+n)) return this.minute = null;
       this.minute = +n;
+
 
       const i = setInterval(() => {
         if(this.minute === null) return clearInterval(i)
+        if(this.minute > 90) {
+          this.minute = null;
+          return clearInterval(i)
+        }
         
         this.minute++;
       }, 60000);
