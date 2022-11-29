@@ -29,6 +29,7 @@
                 v-for="match in liveMatchesList"
                 :key="match.home"
                 :match="match"
+                :isLive="true"
               ></match-item>
             </div>
           </div>
@@ -45,6 +46,7 @@
                 :key="match.home"
                 :match="match"
                 :bet="true"
+                :isLive="false"
               ></match-item>
             </div>
           </div>
@@ -60,6 +62,7 @@
                 v-for="match in finishedMatchesList"
                 :key="match.home"
                 :match="match"
+                :isLive="false"
               ></match-item>
               </div>
           </div>

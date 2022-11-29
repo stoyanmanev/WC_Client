@@ -1,6 +1,7 @@
 <template>
   <div :class="`match ${this.bet ? 'bet' : ''} ${matchBet !== null ? 'mb' : ''}`">
-    <p class="date">{{ match.date }}</p>
+    <p v-if="!isLive" class="date">{{startHourPreset}}</p>
+    <p v-else class="date">{{ minute }}{{(minute !== null ? "'" : '')}}</p>
     <div class="wrapper">
       <div :class="`home-team team ${winner === 'home' ? 'winner' : ''}`">
         <span class="flag" @click="setBet('1')">
@@ -355,7 +356,7 @@
 <script>
 import EllipsisSpinner from "@/components/loaders/EllipsisSpinner.vue";
 export default {
-  props: ["match", "bet"],
+  props: ["match", "bet", "isLive"],
   components: {
     EllipsisSpinner,
   },
@@ -365,6 +366,7 @@ export default {
       winner: null,
       settingBet: false,
       betMessage: null,
+      minute: null,
       matchBet: this.match.bet
     };
   },
@@ -384,6 +386,11 @@ export default {
       if(this.winner === 'draw' && this.matchBet === 'X') return 'correct';
       
       return 'wrong';
+    },
+    startHourPreset(){
+      if(!this.match.startHour) return this.match.date;
+
+      return `${this.match.date} / ${this.match.startHour}`;
     }
   },
   methods: {
@@ -441,9 +448,26 @@ export default {
         }, 3500);
       }
     },
+    setMinutes(){
+      if(!this.isLive) return;
+
+      const minute = this.match.minutes;
+      if(Number.isNaN(+minute)) return this.minute = null;
+      const n = minute.split("'")[0];
+      this.minute = +n;
+
+      const i = setInterval(() => {
+        if(this.minute === null) return clearInterval(i)
+        
+        this.minute++;
+      }, 60000);
+
+      return this.minute;
+    }
   },
   created() {
     this.setWinner();
+    this.setMinutes();
   }
 };
 </script>
